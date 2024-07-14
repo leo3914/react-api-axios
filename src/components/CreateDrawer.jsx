@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
+import { userApi } from "../api/user";
 
 const CreateDrawer = () => {
   const { createDrawer, toggleCreateDrawer, addUser } = useContext(DataContext);
@@ -20,14 +21,8 @@ const CreateDrawer = () => {
 
     setIsLoading(true);
 
-    const res = await fetch("http://localhost:5173/api/users", {
-      method: "POST",
-      headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify(newUser),
-    });
-
-    const json = await res.json();
-    addUser(json);
+    const res = await userApi.post("/users", JSON.stringify(newUser));
+    addUser(res.data);
     setIsLoading(false);
 
     if (formData.get("close")) {

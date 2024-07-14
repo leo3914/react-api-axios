@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
+import { userApi } from "../api/user";
 
 const RowDeleteBtn = ({ id }) => {
   const { deleteUser } = useContext(DataContext);
@@ -7,9 +8,7 @@ const RowDeleteBtn = ({ id }) => {
 
   const handleBtn = async () => {
     setIsLoading(true);
-    const res = await fetch("http://localhost:5173/api/users/" + id, {
-      method: "DELETE",
-    });
+    const res = await userApi.delete(`/users/${id}`);
 
     if (res.status === 204) {
       setIsLoading(false);

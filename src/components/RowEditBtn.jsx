@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
 import { join } from "lodash";
+import { userApi } from "../api/user";
 
 const RowEditBtn = ({ id }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -8,9 +9,8 @@ const RowEditBtn = ({ id }) => {
 
   const handleBtn = async () => {
     setIsLoading(true);
-    const res = await fetch("http://localhost:5173/api/users/" + id);
-    const json = await res.json();
-    setEditUser(json);
+    const res = await userApi.get(`/users/${id}`);
+    setEditUser(res.data);
     setIsLoading(false);
     toggleEditDrawer();
   };

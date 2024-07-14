@@ -3,16 +3,18 @@ import EmptyRow from "./EmptyRow";
 import { DataContext } from "../contexts/DataContext";
 import Row from "./Row";
 import LoaderRow from "./LoaderRow";
+import axios from "axios";
+import { userApi } from "../api/user";
 
 const RowGroup = () => {
   const [ready, setReady] = useState(false);
   const { users, setUsers } = useContext(DataContext);
   const loaderRowCount = Array.from({ length: 5 }, (_, index) => index);
+
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await fetch("http://localhost:5173/api/users");
-      const json = await res.json();
-      setUsers(json);
+      const res = await userApi.get("/users");
+      setUsers(res.data);
       setReady(true);
     };
     fetchUsers();

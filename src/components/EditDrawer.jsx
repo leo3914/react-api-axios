@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../contexts/DataContext";
+import { userApi } from "../api/user";
 
 const EditDrawer = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,15 +27,9 @@ const EditDrawer = () => {
     };
 
     setIsLoading(true);
-    const res = await fetch("http://localhost:5173/api/users/" + id, {
-      method: "PUT",
-      headers: new Headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify(newUser),
-    });
+    const res = await userApi.put(`/users/${id}`, JSON.stringify(newUser));
 
-    const json = await res.json();
-
-    updateUser(json);
+    updateUser(res.data);
 
     setIsLoading(false);
 
